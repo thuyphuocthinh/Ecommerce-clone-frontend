@@ -12,6 +12,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import LoadingSpinner from "./LoadingSpinner";
 
 const AnalyticsTab = () => {
   const [analyticsData, setAnalyticsData] = useState({
@@ -23,24 +24,26 @@ const AnalyticsTab = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [dailySalesData, setDailySalesData] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchAnalyticsData = async () => {
-  //     try {
-  //       const response = await axios.get("/analytics");
-  //       setAnalyticsData(response.data.analyticsData);
-  //       setDailySalesData(response.data.dailySalesData);
-  //     } catch (error) {
-  //       console.error("Error fetching analytics data:", error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchAnalyticsData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get("/analytics");
+        console.log(">>> analytics: ", response.data);
+        setAnalyticsData(response.data.analyticsData);
+        setDailySalesData(response.data.dailySalesData);
+      } catch (error) {
+        console.error("Error fetching analytics data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  //   fetchAnalyticsData();
-  // }, []);
+    fetchAnalyticsData();
+  }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSpinner />;
   }
 
   return (
