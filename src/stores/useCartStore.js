@@ -114,4 +114,7 @@ export const useCartStore = create((set, get) => ({
     get().calculateTotals();
     toast.success("Coupon removed");
   },
+  clearCart: async () => {
+    set({ cart: [], coupon: null, total: 0, subtotal: 0 });
+  },
 }));
